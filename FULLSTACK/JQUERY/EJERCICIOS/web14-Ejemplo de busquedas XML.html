@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>BUSQUEDAS XML</h1>
+
+    <label>Apellido:</label>
+    <input type="text" id="cajaapellido">
+    <button type="button" id="botonapellido">
+        Buscar apellidos
+    </button>
+
+    <hr>
+
+    <label>CODIGO HOSPITAL</label>
+    <input type="text" id="cajahospital">
+    <button type="button" id="botonhospital">
+        Buscar hospital
+    </button>
+
+    <hr>
+
+    <div id="contenido"></div>
+
+    <script>
+        $(document).ready(function () {
+            // BUSQUEDA POR CONTENIDO
+            $("#botonapellido").click(function () {
+                // CAJAAPELLIDO ES UN INPUT TEXT, OBTENEMOS EL VALOR CONTENIDO
+                var apellido = $("#cajaapellido").val();
+                $.get("../XML/empleados.xml", function (data) {
+                    // LA SIGUIENTE VAR NOS ALMACENARA EL VALOR DE APELLIDO DENTRO DE APELLIDO:contains("apellido")
+                    var filtro = "APELLIDO:contains(" + apellido + ")";
+                    console.log(filtro); // NOS DEVUELVE POR EJEMPLO SI PONEMOS AR EN EL INPUT NOS DEVOLVERA APELLIDO:contains(AR)
+                    var html = "";
+
+                    if ($(data).find(filtro).length == 0) {
+                        console.log("NO HAY APELLIDOS CON " + apellido);
+                        html = "<h1 style='color:red'>" + "NO HAY APELLIDOS CON " + apellido + "</h1>";
+                    } else {
+                        // RECORRREMOS PORQUE VUELVE VARIOS ELEMENTOS
+                        $(data).find(filtro).each(function () {
+                            // PARA CADA ELEMENTO FILTRADO VAMOS A OBTENER EN UNA VARIABLE EL TEXTO CONTENIDO O QUE CONTIENE TEXTO COMO EN FILTRO
+                            var ape = $(this).text();
+                            console.log(ape); // NOS DEVUELVE EL APELLIDO COMO TAL MARTINEZ, NEGRO, GUTIERREZ...
+                            html += "<h1>" + ape + "</h1>";
+                        });
+                    }
+                    $("#contenido").html(html);
+                });
+            });
+
+            // BUSQUEDA POR ATRIBUTO
+            $("#botonhospital").click(function () {
+                // CAJAHOSPITAL ES UN INPUT TEXT, OBTENEMOS EL VALOR CONTENIDO
+                var codigo = $("#cajahospital").val();
+                $.get("../XML/hospital.xml", function (data) {
+                    // HOSPITAL[HOSPITAL_COD=14]
+                    // LA SIGUIENTE VAR FILTRO SIRVE PARA QUE MEDIANTE EL CODIGO QUE PONGAMOS PODAMOS CONCATENARLO CON HOSPITAL[HOSPITAL_COD=""], ASI PODEMOS BUSCAR EL CODIGO MEDIANTE EL ATRIBUTO
+                    var filtro = "HOSPITAL[HOSPITAL_COD=" + codigo + "]";
+                    console.log(filtro); // NOS DEVOLVERA HOSPITAL[HOSPITAL_COD=1], LO QUE SE PODRIA DECIR QUE ES LO MISMO QUE <HOSPITAL HOSPITAL_COD="1">
+                    // CAPTURAMOS EL NODO DE HOSPITAL PARA POSTERIORMENTE RECUPERAR LOS DATOS NECESARIOS
+                    // CON .first() ESTAMOS INDICANDO QUE QUEREMOS QUE NOS DEVUELVA EL PRIMERO, SE PODRIA DECIR QUE EVITAMOS DUPLICADOS
+                    var nodohospital = $(data).find(filtro).first();
+                    console.log(nodohospital[0]);
+                    // CON LA SIGUIENTE VAR OBTENEMOS EL VALOR CONTENIDO EN EL ATRIBUTO NOMBRE
+                    var nombre = nodohospital.attr("NOMBRE");
+                    // PINTAMOS NOMBRE EN LA CAJA CONTENIDO
+                    $("#contenido").html("<h1>Resultado: " + nombre + "</h1>");
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

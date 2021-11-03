@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <script>
+        /*
+        Ahora mismo hemos recuperado todo el contenido del documento, pero tambien podriamos filtar por algun elemento como la LOCALIDAD o el NOMBRE (ejemplo web13).
+
+        Debemos diferenciar entre filtrar por atributo o por etiqueta.
+
+        Por atributo ya lo conocemos:
+            <NOMBRE ID="1">
+                <EMPRESA>MICROSOFT</EMPRESA>
+            </NOMBRE>
+            <NOMBRE ID="2">
+                <EMPRESA>AMAZON</EMPRESA>
+            </NOMBRE>
+
+            $(this).find("NOMBRE[ID=1]");
+
+        Para buscar por etiqueta (contenido) se utiliza :contains
+            $(this).find("EMPRESA:contains(MICROSOFT)");
+        */
+    </script>
+</body>
+
+</html>

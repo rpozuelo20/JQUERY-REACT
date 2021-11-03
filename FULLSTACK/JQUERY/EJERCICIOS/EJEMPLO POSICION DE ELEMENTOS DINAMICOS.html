@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <input type="range" id="inputRange" min="1" max="10">
+    <br>
+    <div id="resultado"></div>
+
+    <script>
+        $(document).ready(function () {
+            // SENTENCIA DE EVENTO CHANGE AL ELEMENTO CON ID INPUTRANGE
+            $("#inputRange").change(function () {
+                // CREAMOS LAS VARIABLES QUE ALMACENARAN EL VALOR DEL INPUT RANGE Y LA QUE NOS VACIARA LA CAJA RESULTADO
+                var rangeVal = $("#inputRange").val();
+                var resultado = $("#resultado").empty();
+
+                // CREAMOS UN BUCLE FOR EN EL QUE CADA VEZ QUE I SEA MENOR O IGUAL A RANGEVAL ENTONCES INCREMENTAREMOS I
+                for (var i = 1; i <= rangeVal; i++) {
+                    // DENTRO DEL BUCLE VAMOS A CREAR 2 VARIABLES QUE ALMACENARAN LA CREACION DE UN BOTON Y UNA IMAGE, TENER EN CUENTA QUE EN LOS ATRIBUTOS DE CADA OBJETO ESTAMOS GUARDANDO UN DATA-KEY QUE GUARDARA EL ORDEN EN EL QUE SE HA CREADO EN BASE AL VALOR DE I
+                    var boton = $("<button>", { "text": "Imagen " + i, "data-numbtn": i });
+                    var imagen = $("<img>", { "src": "../IMG/sad.jpg", "height": "100px", "data-numimg": i });
+
+                    // HACEMOS UN APPENTO A LAS 2 VARiABLES PARA ALMACENARLAS O MOSTRARLAS DENTRO DE LA CAJA RESULTADO
+                    boton.appendTo(resultado);
+                    imagen.appendTo(resultado);
+
+                    // SENTENCIA DE EVENTO CLICK A LA VARIABLE BOTON
+                    boton.click(function () {
+                        // HACEMOS UNA VARIABLE QUE SEA THIS O EL MISMO OBJETO AL QUE ESTAMOS TOCANDO Y RECUPERAMOS EL DATA-KEY
+                        var btnnum = $(this).data("numbtn");
+
+                        // LA SIGUIENTE SENTENCIA NOS CAMBIARA EL SRC DE LA IMAGEN, TENER EN CUENTA COMO SE HA CONCATENADO LA SELECCION DEL DATA-KEY, POR LO QUE SOLO REALIZARA LO SIGUIENTE A LAS IMAGENES QUE SU DATA-KEY SEAN IGUALES AL DATA-KEY DEL BOTON PULSADO
+                        $("img[data-numimg=" + btnnum + "]").attr({ "src": "../IMG/happy.webp" });
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de evaluacion de numeros</title>
+    <script src="../jquery-3.6.0.min.js"></script>
+    <style>
+    </style>
+</head>
+
+<body>
+    <h1>Evaluacion de numeros</h1>
+    <div class="container-num">
+        <div class="sub-ctn">
+            <input id="num1" type="text">
+            <input id="num2" type="text">
+            <input id="num3" type="text">
+        </div>
+        <div class="result"></div>
+        <button id="btn">do</button>
+    </div>
+    <script>
+        // Ejemplo evaluacion de numeros
+        // Tendremos 3 cajas de texto donde incluiremos numeros
+        // Debemos de mostrar en un contenido el mayor, menor y el intermedio de los 3 numeros mediante un boton
+        /*$(document).ready(
+            $('#btn').click(
+                function () {
+                    var num1 = $('#num1').val();
+                    var num2 = $('#num2').val();
+                    var num3 = $('#num3').val();
+                    var caja = $('div.result');
+                    //PARA EL NUM1
+                    if (num1 > num2 && num1 > num3) {
+                        console.log('Numero 1 es mayor')
+                    } else if (num1 < num2 && num1 > num3) {
+                        console.log('Numero 1 es mayor que num3 pero menor que num2')
+                    } else if (num1 > num2 && num1 < num3) {
+                        console.log('Numero 1 es mayor que num2 pero menor que num3')
+                    } else if (num1 < num2 && num1 < num3) {
+                        console.log('Numero 1 es menor')
+                    }
+                    //PARA EL NUM2
+                    if (num2 > num1 && num2 > num3) {
+                        console.log('Numero 2 es mayor')
+                    } else if (num2 < num1 && num2 > num3) {
+                        console.log('Numero 2 es mayor que num3 pero menor que num1')
+                    } else if (num2 > num1 && num2 < num3) {
+                        console.log('Numero 2 es mayor que num1 pero menor que num3')
+                    } else if (num2 < num1 && num2 < num3) {
+                        console.log('Numero 2 es menor')
+                    }
+                    //PARA EL NUM3
+                    if (num3 > num2 && num3 > num1) {
+                        console.log('Numero 3 es mayor')
+                    } else if (num3 < num2 && num3 > num1) {
+                        console.log('Numero 3 es mayor que num1 pero menor que num2')
+                    } else if (num3 > num2 && num3 < num1) {
+                        console.log('Numero 3 es mayor que num2 pero menor que num1')
+                    } else if (num3 < num2 && num3 < num1) {
+                        console.log('Numero 3 es menor')
+                    }
+                }
+            )
+        )*/
+
+        $(document).ready(
+            $('#btn').click(
+                function () {
+                    var num1 = parseInt($('#num1').val());
+                    var num2 = parseInt($('#num2').val());
+                    var num3 = parseInt($('#num3').val());
+
+                    var mayor = 0;
+                    if (num1 >= num2 && num1 >= num3) {
+                        mayor = num1
+                    } else if (num2 >= num1 && num2 >= num3) {
+                        mayor = num2
+                    } else {
+                        mayor = num3
+                    }
+                    var menor = 0;
+                    if (num1 <= num2 && num1 <= num3) {
+                        menor = num1
+                    } else if (num2 <= num1 && num2 <= num3) {
+                        menor = num2
+                    } else {
+                        menor = num3
+                    }
+                    var intermedio = (num1 + num2 + num3) - (mayor + menor);
+
+                    $('div.result').html("<h1>Mayor " + mayor
+
+                        + "</h1><h1>Menor: " + menor + "</h1><h1>Intermedio "
+
+                        + intermedio + "</h1>");
+                }
+            )
+        )
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leer atributos XML</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Leer atributos XML</h1>
+    <button type="button" id="botonleer">Cargar datos hospitales</button>
+    <table border="1" id="tabla">
+        <thead>
+            <tr>
+                <th>NOMBRE</th>
+                <th>DIRECCION</th>
+                <th>TELEFONO</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        $(document).ready(function () {
+            $("#botonleer").click(function () {
+                // RECOGEMOS EL DOCUMENTO XML MEDIANTE $.get Y PONEMOS UNA FUNCION
+                $.get("../XML/hospital.xml", function (data) {
+                    // CREAMOS UNA VARIABLE HTML QUE ALMACENARA EL RESULTADO
+                    var html = "";
+                    // LA SIGUIENTE SENTENCIA NOS SERVIRA PARA BUSCAR EN $(data) EL CAMPO HOSPITAL, EN LA QUE A CADA CAMPO VAMOS A EJECUTAR LA SIGUIENTE FUNCION
+                    $(data).find("HOSPITAL").each(function () {
+                        // PARA RECUPERAR EL VALOR DE UN ATRIBUTO
+                        // .attr("NAME")
+                        // LAS SIGUIENTES SON UNA VARIABLES QUE VAN A ALMACENAR DE LA MISMA $(this) SUS ATRIBUTOS NOMBRE, DIRECCION Y TELEFONO
+                        var nombre = $(this).attr("NOMBRE");
+                        var direccion = $(this).attr("DIRECCION");
+                        var telefono = $(this).attr("TELEFONO");
+                        // html += "<tr>";
+                        // html += "<td>" + nombre + "</td>";
+                        // html += "<td>" + direccion + "</td>";
+                        // html += "<td>" + telefono + "</td>";
+                        // html += "</tr>";
+
+                        // HACEMOS LA CONCATENACION DE LAS VARIABLES QUE ESTARAN GUARDADAS EN LA VARIABLE HTML
+                        html += "<tr>" + "<td>" + nombre + "</td>" + "<td>" + direccion + "</td>" + "<td>" + telefono + "</td>" + "</tr>";
+                    });
+                    // PINTAMOS EN LA TABLA CON ID TABLA, EN SU TBODY (va como por una jerarquia, separado por espacio), MEDIANTE HTML EL HTML
+                    $("#tabla tbody").html(html);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

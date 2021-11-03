@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Master Programación</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sticky-footer/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../BOOTSTRAP/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="../BOOTSTRAP/css/sticky-footer.css" rel="stylesheet">
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+        <div class="container">
+            <h1 class="mt-5">API CRUD Departamentos XML</h1>
+            <div class="container">
+                <hr>
+                <label>Numero: </label>
+                <input type="text" id="cajanumero" class="form-control"><br>
+                <label>Nombre: </label>
+                <input type="text" id="cajanombre" class="form-control"><br>
+                <label>Localidad: </label>
+                <input type="text" id="cajalocalidad" class="form-control">
+                <hr>
+                <div class="container d-flex justify-content-between">
+                    <button type="button" id="botoninsertar" class="btn btn-secondary">
+                        Insertar departamento
+                    </button>
+                    <button type="button" id="botonmodificar" class="btn btn-secondary">
+                        Modificar departamento
+                    </button>
+                    <button type="button" id="botoneliminar" class="btn btn-secondary">
+                        Eliminar departamento
+                    </button>
+                </div>
+                <hr>
+                <div class="container d-flex justify-content-center">
+                    <h4 id="result">Realice una acción</h4>
+                </div>
+                <hr>
+                <table border="1" id="tabladepartamentos" class="table table-dark table-sm table-striped">
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Nombre</th>
+                            <th>Localidad</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">Master Programación, Rubén Pozuelo Martínez.</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../BOOTSTRAP/js/bootstrap.min.js"></script>
+    <script src="../BOOTSTRAP/js/jquery-3.6.0.min.js"></script>
+
+    <script>
+        var urlapi = "https://apicruddepartamentosxml.azurewebsites.net";
+
+        $(document).ready(function () {
+            setInterval(cargarDepartamentos, 500);
+
+            cargarDepartamentos();
+            $("#botoninsertar").click(function () {
+                var request = "/api/departamentos";
+                var dept = getDepartamentoXML();
+                $.ajax({
+                    "url": urlapi + request,
+                    "type": "POST",
+                    "data": dept,
+                    "contentType": "application/xml",
+                    success: function () {
+                        console.log("Insertado!!!");
+                        $("#result").text("Contenido insertado sin errores");
+                        cargarDepartamentos();
+                    }, error: function () {
+                        $("#result").text("Error del servicio");
+                    }
+                });
+            });
+            $("#botonmodificar").click(function () {
+                var request = "/api/departamentos";
+                var dept = getDepartamentoXML();
+                $.ajax({
+                    "url": urlapi + request,
+                    "type": "PUT",
+                    "data": dept,
+                    "contentType": "application/xml",
+                    success: function () {
+                        $("#result").text("Contenido modificado sin errores");
+                        cargarDepartamentos();
+                    }, error: function () {
+                        $("#result").text("Error del servicio");
+                    }
+                });
+            });
+            $("#botoneliminar").click(function () {
+                var request = "/api/departamentos/"
+                var deptnum = parseInt($("#cajanumero").val());
+                // $.ajax({
+                //     "url": urlapi + request + deptnum,
+                //     "type": "DELETE",
+                //     success: function () {
+                //         $("#result").text("Contenido eliminado sin errores");
+                //         cargarDepartamentos();
+                //     }, error: function () {
+                //         $("#result").text("Error del servicio");
+                //     }
+                // });
+
+                for (var i = 0; i < 100; i++) {
+                    $.ajax({
+                        "url": urlapi + request + i,
+                        "type": "DELETE",
+                        success: function () {
+                            $("#result").text("Contenido eliminado sin errores");
+                            cargarDepartamentos();
+                        }, error: function () {
+                            $("#result").text("Error del servicio");
+                        }
+                    });
+                }
+            });
+        });
+
+        function getDepartamentoXML() {
+            var num = $("#cajanumero").val();
+            var nom = $("#cajanombre").val();
+            var loc = $("#cajalocalidad").val();
+            var dept = "<Departamento><IdDepartamento>" + num + "</IdDepartamento><Nombre>" + nom + "</Nombre><Localidad>" + loc + "</Localidad></Departamento>";
+            return dept;
+        }
+
+        function cargarDepartamentos() {
+            var request = "/api/departamentos";
+            $.get(urlapi + request, function (data) {
+                // console.log(data);
+                var html = "";
+                var departamentos = $(data).find("Departamento");
+                $(departamentos).each(function () {
+                    var num = $(this).find("IdDepartamento").text();
+                    var nom = $(this).find("Nombre").text();
+                    var loc = $(this).find("Localidad").text();
+                    html += "<tr>";
+                    html += "<td>" + num + "</td>";
+                    html += "<td>" + nom + "</td>";
+                    html += "<td>" + loc + "</td>";
+                    html += "</tr>";
+                });
+                $("#tabladepartamentos tbody").html(html);
+            });
+        }
+    </script>
+</body>
+
+</html>

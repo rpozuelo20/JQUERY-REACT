@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>HOLA</h1>
+
+    <script>
+        //Para realizar el acceso o cambio se utiliza el metodo css
+        $(document).ready(
+            // function () {
+            //     $("body").css("background-color", "red")
+            // }
+            //Podemos utilizar una sintaxis JSON para indicar varios estilos inline
+            function () {
+                $("body").css({ "background-color": "red", "display": "flex", "align-items": "center", "justify-content": "center", "font-family": "arial", "color": "white" })
+            }
+            //Tambien podemos modigicar/añadir las clases css
+            //Se utiiza el atributo addClass o removeClass para añadir o quitar las clases
+        )
+    </script>
+</body>
+
+</html>

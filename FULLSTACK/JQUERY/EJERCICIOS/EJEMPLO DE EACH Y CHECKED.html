@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Practica EACH y CHECKED</h1>
+
+    <button type="button" id="botonGenerar">Generar numeros</button>
+    <button type="button" id="botonSumar">Sumar chequeados</button>
+
+    <h1 id="resultado"></h1>
+
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+
+    <script>
+        $(document).ready(
+            function () {
+                // CON ESTA PRIMERA SENTENCIA TENDREMOS LA POSIBILIDAD DE GENERAR UN NUMERO ALEATORIO PARA CADA VALOR DE CADA INPUT DE TIPO CHECKBOX
+                $("#botonGenerar").click(
+                    function () {
+                        // SI PONGO AQUI EL $(this) ESTO ES EL BOTON
+                        // SELECCIONAMOS AQUELLOS INPUTS QUE SEAN DE TIPO CHECKBOX
+                        $("input[type=checkbox]").each(
+                            function () {
+                                // SI PONGO AQUI EL $(this) ESTO ES CADA OBJETO
+                                // EN ESTA VARIABLE LO QUE ESTAMOS GENERANDO SON LOS NUMEROS ALEATORIOS QUE CONTENDRAN CADA INPUT CHECKBOX
+                                var aleatorio = parseInt((Math.random() * 100) + 1);
+                                // AQUI DECIMOS QUE CADA-ESTE INPUT TENDRA EL VALOR DE ALEATORIO
+                                $(this).val(aleatorio);
+                            }
+                        );
+                    }
+                );
+
+                $("#botonSumar").click(
+                    function () {
+                        // HACEMOS UNA VARIABLE SUMA QUE TENDRA DE VALOR 0, SERA AQUELLO QUE SE SUME CON CADA INPUT CHECKEADO, QUIERO DECIR, POR ASI DECIRLO ES LA BASE DE DONDE EMPEZAMOS LA SUMA
+                        var suma = 0;
+                        // VAMOS A SELECCIONAR TODOS AQUELLOS INPUTS DE TIPO CHECKBOX
+                        $("input[type=checkbox]").each(
+                            function () {
+                                // HACEMOS UN IF PARA DECIR QUE SOLO EN CASO DE QUE EN MISMO INPUTS ESTE CHECKEADO PODRAS EJECUTAR ESA FUNCION CON AQUELLOS
+                                if ($(this).is(":checked")) {
+                                    // LA VARIABLE NUMERO SERA IGUAL AL VALOR DEL MISMO CHECKBOX, SOLO RECUPERAMOS EL VALOR DEL CHECKBOX
+                                    var numero = parseInt($(this).val());
+                                    // REALIZAMOS LA SUMA DE LA SUMA BASE CON EL NUMERO DEL CHECKBOX
+                                    suma += numero;
+                                    // VAMOS A MOSTRAR EL MISMO RESULTADO DE LA SUMA EN EL ELEMENTO CON ID RESULTADO
+                                    $("#resultado").text(suma);
+                                }
+                            }
+                        );
+                    }
+                );
+            }
+        );
+    </script>
+</body>
+
+</html>

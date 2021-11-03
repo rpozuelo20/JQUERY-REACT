@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta
+      name="author"
+      content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
+    />
+    <meta name="generator" content="Hugo 0.88.1" />
+    <title>Master Programación</title>
+
+    <link
+      rel="canonical"
+      href="https://getbootstrap.com/docs/5.1/examples/sticky-footer/"
+    />
+
+    <!-- Bootstrap core CSS -->
+    <link
+      href="../BOOTSTRAP/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3" />
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="../BOOTSTRAP/css/sticky-footer.css" rel="stylesheet" />
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+      <div class="container">
+        <h1 class="mt-5">Practica de empleados CRUD</h1>
+        <hr />
+        <div class="container">
+          <h5>
+            OFICIOS
+            <small class="text-muted"
+              >La siguiente lista contiene los oficios de los empleados.</small
+            >
+          </h5>
+          <select id="desplegable" class="form-select"></select>
+          <small>Los empleados de cada oficio apareceran aqui abajo:</small>
+          <div class="container p-0" id="empleados"></div>
+          <hr />
+          <h5>
+            MODIFICAR SALARIO OFICIO
+            <small class="text-muted"
+              >Desde aqui podremos modificar el salario de los empleados en un
+              mismo oficio.</small
+            >
+          </h5>
+          <label class="mb-1">Introduzca el incremento del salario:</label>
+          <input
+            type="number"
+            id="newSalario"
+            class="form-control"
+            step="100"
+            placeholder="1000"
+            disabled
+          />
+          <label class="mb-1">Seleccione un oficio:</label>
+          <select id="listaoficios" class="form-select" disabled></select>
+          <button
+            type="button"
+            id="botoncambiar"
+            class="btn btn-primary mt-3"
+            disabled
+          >
+            Cambiar salario
+          </button>
+          <hr />
+          <h5>
+            MODIFICAR SALARIO EMPLEADO
+            <small class="text-muted"
+              >Desde aqui podremos modificar el salario de un empleado en
+              concreto.</small
+            >
+          </h5>
+          <div class="container p-0">
+            <div class="row">
+              <div class="col">
+                <label class="mb-1"
+                  >Introduzca el incremento del salario:</label
+                >
+                <input
+                  type="number"
+                  id="newSalario2"
+                  class="form-control"
+                  step="100"
+                  placeholder="1000"
+                  disabled
+                />
+              </div>
+              <div class="col">
+                <label class="mb-1">Seleccione un empleado:</label>
+                <select
+                  id="listaempleados"
+                  class="form-select"
+                  disabled
+                ></select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <button
+                  type="button"
+                  id="botoncambiar2"
+                  class="btn btn-primary mt-3"
+                  disabled
+                >
+                  Cambiar salario
+                </button>
+              </div>
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted"
+          >Master Programación, Rubén Pozuelo Martínez.</span
+        >
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../BOOTSTRAP/js/bootstrap.min.js"></script>
+    <script src="../BOOTSTRAP/js/jquery-3.6.0.min.js"></script>
+
+    <script>
+      // Realizar una pagina en Jquery con las siguientes caracteristicas:
+      // Cargaremos los oficios al iniciar la aplicacion en un desplegable (select option)
+      // Tendremos una caja de texto para poder realizar el incremento
+      // Tendremos 2 botones en la pagina, uno para mostrar los empleados de un determinado
+      // oficio y otro para modificar los empleados por su oficio
+      // Mostraremos los datos de los empleados en una tabla, caja, lista...
+
+      var urlapi = "https://apiempleadosaction.azurewebsites.net";
+
+      $(document).ready(function () {
+        $("#listaoficios").attr("disabled", "disabled");
+        $("#botoncambiar").attr("disabled", "disabled");
+        $("#newSalario").attr("disabled", "disabled");
+        $("#listaempleados").attr("disabled", "disabled");
+        $("#botoncambiar2").attr("disabled", "disabled");
+        $("#newSalario2").attr("disabled", "disabled");
+        cargarOficios();
+        cargarEmpleados();
+        pintarEmplOfic();
+        cambiarSalOfic();
+        cambiarSalEmpl();
+      });
+
+      function cargarOficios() {
+        var request = "/api/Empleados/GetOficios/oficios";
+        var listaOfic = $("#listaoficios");
+        $.ajax({
+          url: urlapi + request,
+          type: "GET",
+          success: function (data) {
+            var option =
+              "<option selected=true disabled=disabled>Select your option</option>";
+            $.each(data, function (index, oficio) {
+              // console.log(index, oficios);
+              option += "<option value=" + oficio + ">" + oficio + "</option>";
+            });
+            $("#desplegable").html(option);
+            $(listaOfic).html(option);
+          },
+          error: function () {
+            console.log("Error del servicio!!!");
+          },
+        });
+      }
+
+      function cargarEmpleados() {
+        var request = "/api/Empleados";
+        var listaEmpl = $("#listaempleados");
+        $.ajax({
+          url: urlapi + request,
+          type: "GET",
+          success: function (data) {
+            var option =
+              "<option selected=true disabled=disabled>Select your option</option>";
+            $.each(data, function (index, empleado) {
+              // console.log(index, oficios);
+              option +=
+                "<option value=" +
+                empleado.idEmpleado +
+                ">" +
+                empleado.apellido +
+                "</option>";
+            });
+            $(listaEmpl).html(option);
+          },
+          error: function () {
+            console.log("Error del servicio!!!");
+          },
+        });
+      }
+
+      function pintarEmplOfic() {
+        var request = "/api/Empleados/GetEmpleadosOficio/empleadosoficio/";
+
+        $("#desplegable").change(function () {
+          $("#listaoficios").removeAttr("disabled");
+          $("#newSalario").removeAttr("disabled");
+          $("#botoncambiar").removeAttr("disabled");
+          $("#listaempleados").removeAttr("disabled");
+          $("#newSalario2").removeAttr("disabled");
+          $("#botoncambiar2").removeAttr("disabled");
+          // console.log($(this).val());
+          var despVal = $(this).val();
+          $.ajax({
+            url: urlapi + request + despVal,
+            type: "GET",
+            success: function (data) {
+              var ul = $("<ul>", {
+                class: "list-group",
+              });
+              // console.log(data[0].apellido);
+              $.each(data, function (index, empleado) {
+                var emplData =
+                  "El " +
+                  empleado.oficio +
+                  " " +
+                  empleado.apellido +
+                  " dispone de un salario de " +
+                  empleado.salario +
+                  "€.";
+                var li = $("<li>", {
+                  text: emplData,
+                  class: "list-group-item",
+                });
+                li.appendTo(ul);
+              });
+              // console.log(ul);
+              $("#empleados").html(ul);
+            },
+          });
+        });
+      }
+
+      function cambiarSalOfic() {
+        var request = "/api/Empleados/IncrementarSalarioOficios/";
+        $("#botoncambiar").click(function () {
+          var oficVal = $("#listaoficios").val();
+          var salVal = parseInt($("#newSalario").val());
+          $.ajax({
+            url: urlapi + request + oficVal + "/" + salVal,
+            type: "PUT",
+            success: function () {
+              pintarEmplOfic();
+              console.log("OK, SALARIO modificado.");
+            },
+          });
+        });
+      }
+
+      function cambiarSalEmpl() {
+        var request = "/api/Empleados/IncrementarSalario/";
+        $("#botoncambiar2").click(function () {
+          var emplVal = $("#listaempleados").val();
+          var salVal = parseInt($("#newSalario2").val());
+          console.log(emplVal, salVal);
+          $.ajax({
+            url: urlapi + request + emplVal + "/" + salVal,
+            type: "PUT",
+            success: function () {
+              pintarEmplOfic();
+              console.log("OK, SALARIO modificado.");
+            },
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

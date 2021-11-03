@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jQuery Ejemplo SPA</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body>
+    <header id="menuNav"></header>
+
+    <div class="container-fluid container text-center">
+      <br />
+      <h1 class="container">
+        Ejemplo SPA <small class="text-muted">jQuery</small>
+      </h1>
+      <hr />
+      <p class="container">
+        Tener en cuenta que no es una SPA real, simplemente es un ejemplo de
+        carga de componentes en una web, pero en el que tambien se muestra la
+        forma de enviar datos/propiedades desde el href.
+      </p>
+      <div id="home"></div>
+    </div>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#menuNav").load("./navbar.html"); // nota: .load permite cargar "componentes" en jQuery.
+        $("#home").load("./home.html");
+      });
+    </script>
+  </body>
+</html>

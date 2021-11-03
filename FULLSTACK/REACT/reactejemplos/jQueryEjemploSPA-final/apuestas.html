@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jQuery Ejemplo SPA</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body>
+    <header id="menuNav"></header>
+
+    <div class="container-fluid container text-center">
+      <br />
+      <h1 class="container">
+        Apuestas
+        <small id="nomEquipo" class="text-muted">
+          <a class="btn btn-danger" href="./añadirApuesta.html"
+            >Añadir apuesta</a
+          ></small
+        >
+      </h1>
+      <hr />
+      <div class="container p-3">
+        <table class="border container">
+          <thead>
+            <tr>
+              <th>USUARIO</th>
+              <th>RESULTADO</th>
+              <th>FECHA</th>
+            </tr>
+          </thead>
+          <tbody id="apuestasTabla"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#menuNav").load("./navbar.html");
+        var urlapi = "https://apichampions.azurewebsites.net/";
+        var requestApuestas = "api/Apuestas";
+        $.ajax({
+          url: urlapi + requestApuestas,
+          type: "GET",
+          success: function (data) {
+            var apuestatr = "";
+            $.each(data, function (index, apuesta) {
+              apuestatr +=
+                "<tr><td>" +
+                apuesta.usuario +
+                "</td><td>" +
+                apuesta.resultado +
+                "</td><td>" +
+                apuesta.fecha +
+                "</td></tr>";
+              $("#apuestasTabla").html(apuestatr);
+            });
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

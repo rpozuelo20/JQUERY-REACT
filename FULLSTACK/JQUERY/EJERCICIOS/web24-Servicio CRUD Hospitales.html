@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Master Programación</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sticky-footer/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../BOOTSTRAP/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        table {
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="../BOOTSTRAP/css/sticky-footer.css" rel="stylesheet">
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+        <div class="container">
+            <h1 class="mt-5">Servicio CRUD Hospitales</h1>
+            <div class="container">
+                <hr>
+                <label>Numero de hospital: </label>
+                <input type="text" id="cajanumero" class="form-control"><br>
+                <label>Nombre de hospital: </label>
+                <input type="text" id="cajanombre" class="form-control"><br>
+                <label>Dirección de hospital: </label>
+                <input type="text" id="cajadireccion" class="form-control"><br>
+                <label>Teléfono de hospital: </label>
+                <input type="text" id="cajatelefono" class="form-control"><br>
+                <label>Camas de hospital: </label>
+                <input type="text" id="cajacama" class="form-control">
+                <hr>
+                <div class="container d-flex justify-content-between">
+                    <button type="button" id="botoninsertar" class="btn btn-secondary">
+                        Insertar hospital
+                    </button>
+                    <button type="button" id="botonmodificar" class="btn btn-secondary">
+                        Modificar hospital
+                    </button>
+                    <button type="button" id="botoneliminar" class="btn btn-secondary">
+                        Eliminar hospital
+                    </button>
+                </div>
+                <div class="container d-flex justify-content-center" id="dialogo"></div>
+                <hr>
+                <div class="container d-flex justify-content-center">
+                    <h4 id="result">Realice una acción</h4>
+                </div>
+                <hr>
+                <table border="1" id="tablahospitales" class="table table-dark table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">Master Programación, Rubén Pozuelo Martínez.</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../BOOTSTRAP/js/bootstrap.min.js"></script>
+    <script src="../BOOTSTRAP/js/jquery-3.6.0.min.js"></script>
+
+    <script>
+        var urlapi = "https://apicrudhospital.azurewebsites.net";
+
+        $(document).ready(function () {
+            cargarHospitales();
+            // setInterval(cargarHospitales, 1000);
+
+            $("#botoninsertar").click(function () {
+                var request = "/webresources/hospitales/post";
+                var hosp = getHospitales();
+
+                // console.log(hosp);
+
+                $.ajax({
+                    "url": urlapi + request,
+                    "type": "POST",
+                    "data": hosp,
+                    "contentType": "application/json",
+                    success: function () {
+                        console.log("Datos insertados correctamente.")
+                        cargarHospitales();
+                    }, error: function () {
+                        console.log("Error del servicio.")
+                    }
+                });
+            });
+
+            $("#botonmodificar").click(function () {
+                var request = "/webresources/hospitales/put";
+                var hosp = getHospitales();
+
+                $.ajax({
+                    "url": urlapi + request,
+                    "type": "PUT",
+                    "data": hosp,
+                    "contentType": "application/json",
+                    success: function () {
+                        console.log("Datos modificados correctamente.")
+                        cargarHospitales();
+                    }, error: function () {
+                        console.log("Error del servicio.")
+                    }
+                });
+            });
+
+            $("#botoneliminar").click(function () {
+                var request = "/webresources/hospitales/delete";
+                var num = parseInt($("#cajanumero").val());
+
+                if (confirm("¿Desea proceder con la eliminación del contenido?")) {
+                    $.ajax({
+                        "url": urlapi + request + "/" + num,
+                        "type": "DELETE",
+                        success: function () {
+                            console.log("Datos eliminados correctamente.")
+                            cargarHospitales();
+                        }, error: function () {
+                            console.log("Error del servicio.")
+                        }
+
+                    });
+                }
+            });
+        });
+
+        function getHospitales() {
+            var num = parseInt($("#cajanumero").val());
+            var nom = $("#cajanombre").val();
+            var dir = $("#cajadireccion").val();
+            var tel = $("#cajatelefono").val();
+            var cam = parseInt($("#cajacama").val());
+
+            var hospital = new Object();
+            hospital.idhospital = num;
+            hospital.nombre = nom;
+            hospital.direccion = dir;
+            hospital.telefono = tel;
+            hospital.camas = cam;
+            var json = JSON.stringify(hospital);
+
+            // console.log(hospital);
+            return json;
+        }
+
+        function cargarHospitales() {
+            var request = "/webresources/hospitales";
+            $.ajax({
+                "url": urlapi + request,
+                "type": "GET",
+                success: function (data) {
+                    var html = "";
+                    $.each(data, function (index, hosp) {
+                        // console.log(index, hosp);
+                        html += "<tr data-idnum=" + hosp.idhospital + "><td>" + hosp.nombre + "</td><td>" + hosp.direccion + "</td><td>" + hosp.telefono + "</td></tr><tr id=subdata" + hosp.idhospital + "></tr>";
+                        $("#tablahospitales tbody").html(html);
+
+                        $("tr").each(function () {
+                            $(this).click(function () {
+                                // console.log($(this).data("idnum"));
+                                var trdata = $(this).data("idnum");
+
+                                $.ajax({
+                                    "url": urlapi + request,
+                                    "type": "GET",
+                                    success: function (data) {
+                                        var html = "";
+                                        $.each(data, function (index, hosp) {
+                                            if (trdata == hosp.idhospital) {
+                                                // console.log(hosp);
+                                                html += "<td colspan=3><p><u>Su idhospital es <b>" + hosp.idhospital + "</b>, dispone de <b>" + hosp.camas + "</b> camas.</u></p></td>";
+
+                                                var num = parseInt($("#cajanumero").val(hosp.idhospital));
+                                                var nom = $("#cajanombre").val(hosp.nombre);
+                                                var dir = $("#cajadireccion").val(hosp.direccion);
+                                                var tel = $("#cajatelefono").val(hosp.telefono);
+                                                var cam = parseInt($("#cajacama").val(hosp.camas));
+                                            }
+                                            $("#subdata" + trdata).html(html);
+                                        });
+                                    }
+                                });
+                            });
+                        });
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

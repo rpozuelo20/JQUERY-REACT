@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Generar controles dinamicamente</h1>
+    <label>Introduzca un texto:</label>
+    <input type="text" id="cajatexto">
+    <button id="botoncrear">Crear titulo</button>
+    <div id="padre"></div>
+
+    <script>
+        // Podemos crear objetos de forma dinámica, pero tenemos que averiguar si dichos objetos son receptores de eventos o solamente son meros dibujos. 
+
+        // LOS OBJETOS CREADOS DINAMICAMENTE NO TIENEN EVENTOS
+
+        // Para crear objetos se podemos utilizar dos sintaxis:
+
+        // Poniendo los valores del nuevo objeto uno a uno
+        // var parrafo = $("p");
+        // parrafo.text("Soy un PARRAFO DINAMICO");
+
+        // Construyendo el objeto con sus valores inicializados
+        // var parrafo=$("<p>", {"text":"NUEVO PARRAFO", "style":"color:blue"});
+
+        // Los objetos creados debemos ponerlos en el dibujo HTML
+        // Tenemos 2 formas de agregar los objetos al dibujo
+
+        // Utilizando al parent: (Quiero guardar en un div el parrafo)
+        // <div id="padre"></div>
+        // padre.append(parrafo);
+
+        // Utilizando al hijo que se utiliza la palabra appendTo
+        // parrafo.appendTo(padre);
+
+        // EVENTOS EN OBJETOS DINAMICOS
+        // Si deseamos que los objetos generados tengan eventos debemos crear un LISTENER en la creacion del objeto
+
+        // Tenemos 2 sintaxis
+
+        // Sintaxis algo antigua
+        // Se utiliza on
+        // objeto.on("evento", function(){});
+
+        // Sintaxis moderna de JQUERY
+        // Se utiliza objeto.evento(function(){});
+
+        //Las acciones no suceden al mismo tiempo aunque esten en el mismo codigo.
+        //No podemos compartir variables aunque en versiones modernas si que es funcional (depende del navegador)
+
+
+        $(document).ready(
+            function () {
+                $("h1").click(function () {
+                    $(this).text("Evento activado!!!");
+                });
+
+                $("#botoncrear").click(
+                    function () {
+                        var texto = $("#cajatexto").val();
+
+                        // var h1 = $("<h1>");
+                        // h1.text(texto);
+                        // h1.css("color", "fuchsia");
+                        // $("#padre").append(h1);
+
+                        //CREAR LOS CONTROLES CON JSON
+                        var h1 = $("<h1>", {
+                            "text": texto,
+                            "style": "color:blue"
+                        });
+                        h1.appendTo($("#padre"));
+                        h1.click(function () {
+                            $(this).css("color", "gray");
+                            var texto = $(this).text();
+                            alert(texto)
+                        })
+                    }
+                );
+            }
+        );
+    </script>
+</body>
+
+</html>

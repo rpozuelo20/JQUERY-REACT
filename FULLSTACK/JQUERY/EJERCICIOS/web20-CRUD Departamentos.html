@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Fixed top navbar example · Bootstrap v5.1</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/navbar-fixed/">
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="../BOOTSTRAP/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="manifest" href="/docs/5.1/assets/img/favicons/manifest.json">
+    <link rel="mask-icon" href="/docs/5.1/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
+    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">
+    <meta name="theme-color" content="#7952b3">
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <div class="bg-light p-5 rounded">
+            <h1>Ejemplo CRUD JQUERY</h1>
+            <label>Numero: </label>
+            <input type="text" id="cajanumero"><br>
+            <label>Nombre: </label>
+            <input type="text" id="cajanombre"><br>
+            <label>Localidad: </label>
+            <input type="text" id="cajalocalidad"><br>
+            <hr>
+            <h3 id="titulo">Realice una accion</h2>
+                <hr>
+                <button type="button" id="botoninsertar">
+                    Insertar departamento
+                </button>
+                <button type="button" id="botonmodificar">
+                    Modificar departamento
+                </button>
+                <button type="button" id="botoneliminar">
+                    Eliminar departamento
+                </button>
+                <hr>
+                <table border="1" id="tabladepartamentos">
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Nombre</th>
+                            <th>Localidad</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+        </div>
+    </main>
+
+    <script src="../BOOTSTRAP/js/jquery-3.6.0.min.js"></script>
+    <script src="../BOOTSTRAP/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <script>
+        var urlapi = "https://apicruddepartamentoscore.azurewebsites.net";
+        $(document).ready(function () {
+            setInterval(cargarDepartamentos, 1000);
+
+            cargarDepartamentos();
+
+            $("#botoninsertar").click(function () {
+                var request = "/api/departamentos";
+                var num = $("#cajanumero").val();
+                var nom = $("#cajanombre").val();
+                var loc = $("#cajalocalidad").val();
+                // PARA PODER INSERTAR DEBEMOS ENVIAR UN OBJETO DEPARTAMENTO EN FORMATO JSON
+                // DEBEMOS CREARNOS UN OBJETO JAVASCRIPT CON LAS PROPIEDADES DEL JSON
+                var dept = new Object();
+                dept.numero = parseInt(num);
+                dept.nombre = nom;
+                dept.localidad = loc;
+                // UNA VES QUE TENEMOS EL OBJETO HAY QUE TRANSFORMARLO A FORMATO JSON
+                // PARA ELLO SE UTILIZA UN METODO DENTRO DE JAVASCRIPT: JSON.stringfy(OBJETO)
+                var json = JSON.stringify(dept);
+                // console.log(json);
+                // PARA ENVIAR INFORMACION AL SERVICIO SE REALIZA MEDIANTE EL ATRIBUTO data
+                // SI ENVIAMOS data, DEBEMOS INCLUIR TAMBIEN contentType QUE ES LA PROPIEDAD
+                // QUE INDICA EL TIPO DE DATO QUE ENVIAMOS AL SERVICIO
+                // contentType UTILIZA MIME TYPE: application/json
+                $.ajax({
+                    "url": urlapi + request,
+                    "type": "POST", // SIEMPRE MAYUSCULAS
+                    // EN ESTE CASO NO NOS HACE FALTA AÑADIR dataType POR QUE NO VAMOS A
+                    // CONSUMIR DATOS, SINO INSERTARLOS, PARA EVITAR ERRORES NO LO PONEMOS
+                    "data": json, // EN data PONEMOS json QUE ES LO QUE VAMOS A HACER POST
+                    "contentType": "application/json", // TIPO ENVIADO PONERLO SI O SI
+                    "success": function () {
+                        $("#titulo").text("DATO " + num + " INSERTADO CORRECTAMENTE!!!");
+                        cargarDepartamentos();
+                    }, "error": function () {
+                        $("#titulo").text("ERROR DEL SERVICIO!!!");
+                    }
+                });
+            });
+
+            $("#botonmodificar").click(function () {
+                var num = $("#cajanumero").val();
+                var nom = $("#cajanombre").val();
+                var loc = $("#cajalocalidad").val();
+                var request = "/api/departamentos";
+                var dept = new Object();
+                dept.numero = parseInt(num);
+                dept.nombre = nom;
+                dept.localidad = loc;
+                var json = JSON.stringify(dept);
+                $.ajax({
+                    "url": urlapi + request,
+                    "type": "PUT",
+                    "data": json,
+                    "contentType": "application/json",
+                    "success": function () {
+                        $("#titulo").text("DATO " + num + " MODIFICADO CORRECTAMENTE!!!");
+                        cargarDepartamentos();
+                    }, "error": function () {
+                        $("#titulo").text("ERROR DEL SERVICIO!!!");
+                    }
+                });
+            });
+
+            $("#botoneliminar").click(function () {
+                var num = $("#cajanumero").val();
+                var request = "/api/departamentos/" + parseInt(num);
+                // console.log(request);
+                $.ajax({
+                    "url": urlapi + request,
+                    "type": "DELETE",
+                    "success": function () {
+                        $("#titulo").text("DATO " + num + " ELIMINADO CORRECTAMENTE!!!");
+                        cargarDepartamentos();
+                    }, "error": function () {
+                        $("#titulo").text("ERROR DEL SERVICIO!!!");
+                    }
+                })
+            });
+        });
+
+        function cargarDepartamentos() {
+            var request = "/api/departamentos";
+            $.ajax({
+                "url": urlapi + request,
+                "type": "GET",
+                "dataType": "json",
+                "success": function (data) {
+                    var html = "";
+                    $.each(data, function (index, dept) {
+                        html += "<tr>";
+                        html += "<td>" + dept.numero + "</td>";
+                        html += "<td>" + dept.nombre + "</td>";
+                        html += "<td>" + dept.localidad + "</td>";
+                        html += "</tr>";
+                    });
+                    $("#tabladepartamentos tbody").html(html);
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

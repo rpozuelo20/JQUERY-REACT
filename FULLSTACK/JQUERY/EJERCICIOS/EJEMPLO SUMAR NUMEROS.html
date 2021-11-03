@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1 id="resultado">0</h1>
+    <div id="cnt"></div>
+    <script>
+        // Queremos que al cargar la pagina generemos 10 botones cada uno con un numero aleatorio en su valor, y al pulsar un boton iremos sumando en un h1 cada valor del boton pulsado.
+
+        $(document).ready(
+            function () {
+                // CREAMOS EL BUCLE FOR QUE NOS VA A DAR 10 BOTONES
+                for (var i = 0; i <= 10; i++) {
+                    // CREAMOS LAS VARIABLES QUE VAN A DARNOS EL NUMERO ALEATORIO Y EL BOTON
+                    var aleatorio = parseInt((Math.random() * 50) + 1);
+                    var boton = $("<button>", {
+                        "value": aleatorio,
+                        "text": aleatorio
+                    });
+                    // DECIMOS QUE VAMOS A PONER EL BOTON EN LA CAJA CNT
+                    $("#cnt").append(boton);
+                    // HACEMOS UN EVENTO CLICK PARA LOS BOTONES
+                    boton.click(function () {
+                        // HACEMOS UNA VARIABLE SUMA QUE NOS VA A PROPORCIONAR EL VALOR O TEXTO DENTRO DE EL H1 RESULTADO
+                        var suma = parseInt($("#resultado").text());
+                        // RECUPERAMOS EL VALOR DEL BOTON PULSADO
+                        var numero = parseInt($(this).val());
+                        // REALIZAMOS LA OPERACION DE SUMA DEL LAS 2 VARIABLES
+                        suma += numero;
+                        // PINTAMOS EL RESULTADO EN LA CAJA
+                        $("#resultado").text(suma);
+                    });
+                }
+            }
+        );
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jQuery Ejemplo SPA</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body>
+    <header id="menuNav"></header>
+
+    <div class="container-fluid container text-center">
+      <br />
+      <h1 class="container">Añada una nueva apuesta</h1>
+      <hr />
+      <div class="container p-3">
+        <form class="container w-50">
+          <div class="text-lg-start m-1">
+            <label class="form-label">Introduzca un usuario: </label>
+            <input id="usrVal" class="w-100" type="text" value="sample" />
+          </div>
+          <div class="text-lg-start m-1">
+            <label class="form-label">Real Madrid: </label>
+            <input id="madVal" class="w-100" type="number" placeholder="0" />
+          </div>
+          <div class="text-lg-start m-1">
+            <label class="form-label">Atletico de Madrid: </label>
+            <input id="altVal" class="w-100" type="number" placeholder="0" />
+          </div>
+          <button id="btnAñadir" class="btn btn-danger m-1">
+            Añadir apuesta
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#menuNav").load("./navbar.html");
+        $("#btnAñadir").click(function (e) {
+          e.preventDefault();
+          var user = $("#usrVal").val();
+          var madrid = $("#madVal").val();
+          var atleti = $("#altVal").val();
+          var result = madrid + "-" + atleti;
+
+          var id = parseInt(Math.random() * 66 + 1);
+
+          var today = new Date();
+          var date =
+            today.getDate() +
+            "/" +
+            (today.getMonth() + 1) +
+            "/" +
+            today.getFullYear();
+
+          var apuesta = {
+            idApuesta: id,
+            usuario: user,
+            resultado: result,
+            fecha: date,
+          };
+
+          apuesta = JSON.stringify(apuesta); // nota: IMPORTANTE PARA CAMBIAR EL FORMATO DEL ARRAY A JSON.
+          console.log(apuesta);
+
+          $.ajax({
+            url: "https://apichampions.azurewebsites.net/api/Apuestas",
+            type: "POST",
+            data: apuesta,
+            contentType: "application/json",
+            success: function () {
+              console.log("Apuesta insertada correctamente!!!");
+              window.location.replace("./apuestas.html");
+            },
+            error: function () {
+              console.log("Error al insertar la apuesta!!!");
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

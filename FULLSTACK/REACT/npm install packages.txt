@@ -1,0 +1,44 @@
+--// LIBRERIA PARA LEER SERVICIOS API //--
+
+npm install --save axios    // nota: para instalar las dependencias.
+
+import axios from 'axios'   // nota: para importarlo en el componente.
+
+// nota: para usarlo.
+axios.get(URL).then(response=>{
+    // nota: dentro de response los datos a consumir estan dentro de una propiedad llamada data, response.data.
+});
+
+--// COMANDO QUE AGREGA RUTAS //--
+
+npm install --save react-router-dom // nota: para instalar las dependencias.
+
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+// nota: ejemplo router.js
+
+class Router extends Component {
+	render () {
+		return (
+			<BrowserRouter>
+				<Switch>
+					<Route path="/" component={Casa}/>
+					<Route path="/comics" component={Comics}/>
+				</Switch>
+			</BrowserRouter>
+		)
+	}
+}
+export default Router;
+
+// nota: para crear clases de React dinámicamente tenemos el snippet rcc.
+
+npm install bootstrap --save
+
+import "bootstrap/dist/js/bootstrap.bundle";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+npm install jquery popper.js
+
+import $ from "jquery";
+import Popper from 'popper.js';

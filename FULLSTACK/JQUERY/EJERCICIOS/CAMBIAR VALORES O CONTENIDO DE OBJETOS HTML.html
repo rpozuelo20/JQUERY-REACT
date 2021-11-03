@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        input,
+        button {
+            width: 50px;
+        }
+
+        #result {
+            width: 150px;
+            background-color: #000;
+            height: 30px;
+            color: white;
+        }
+    </style>
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <p id="parrafo">Prueba de multiplicar</p>
+
+    <input id="number" type="text"><input id="mult" type="text"><button id="btn">send</button>
+    <div id="result"></div>
+
+    <script>
+        //Esto se aplica sobre etiquetas que puedan tener contenido o puedan tener algun valor en su interior
+
+        //CONTENIDO: h1, p, span
+        //VALOR: controles de formulario input, textarea, button
+
+        //Etiquetas de contenido
+        //Podemos acceder o modificar su texto mediante text
+        //Si deseamos modificar un contenido podemos realizarlo mediante 2 formas
+
+        // 1) texto plano: text
+        // 2) codigo html interpretable: html
+        $(document).ready(
+            function () {
+                // //Si utilizamos HTML cambiaremos el elemento
+                // $("#parrafo").html("<h1>TITULO</h1>")
+                // //Si utilizamos TEXT añadiremos el texto
+                // $("#parrafo").text("<h2>TITULO</h2>")
+
+                //Tambien podemos cambiar o acceder a valores de objetos formulario mediante el metodo val
+                // var valor = $("#caja").val();
+                // console.log(valor)
+                // var doble = valor * 2;
+
+                // //Podemos escribir el valor
+                // $("#caja").val(doble);
+
+                $('#btn').click(
+                    function () {
+                        //RECUPERAMOS LOS VALORES QUE VAMOS A MULTIPLICAR
+                        var value = $('#number').val();
+                        var mult = $('#mult').val();
+                        //RECUPERAMOS LA CAJA QUE VA A MOSTRAR EL RESULTADO
+                        //PARA CONVERTIR A NUMERO UTILIZAMOS parseInt o parseDouble, aunque number tambien valdria
+                        var result = parseInt(value) * parseInt(mult);
+                        //REALIZAMOS LA FORMULA DONDE DECIMOS QUE VAMOS A ESCRIBIR EL RESULTADO DE LA OPERACION EN LA MISMA CAJA
+                        $('#result').text(result);
+                        if (result >= 0) {
+                            $('#result').css("background-color", "red")
+                        } else {
+                            $('#result').css("background-color", "blue")
+                        }
+                    }
+                )
+
+            }
+        )
+    </script>
+</body>
+
+</html>

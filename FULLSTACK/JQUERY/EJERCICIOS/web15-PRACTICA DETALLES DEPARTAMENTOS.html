@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../BOOTSTRAP/css/bootstrap.min.css">
+
+    <script src="../jquery-3.6.0.min.js"></script>
+    <script src="../BOOTSTRAP/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <h1>DEPARTAMENTOS DETALLES</h1>
+    <div id="resultado"></div>
+    <hr>
+    <div id="subResultado"></div>
+
+    <script>
+        /*
+        PRACTICA DETALLES DEPARTAMENTOS
+
+        Utilizaremos el documento departamentos.xml
+        Al iniciar la aplicación, debemos mostrar tantos botones como
+        Departamentos tengamos en el documento.
+
+        El número 10 o 20 son los ID de cada departamento.
+
+        Al pulsar sobre el botón de un departamento, mostramos sus datos
+        Por ahí.  Dibujamos el nombre y la localidad del departamento pulsado.
+        */
+
+        $(document).ready(function () {
+            $.get("../XML/departamentosetiquetas.xml", function (data) {
+                $(data).find("DEPARTAMENTO").each(function () {
+                    var html = "";
+                    var idDepartamento = $(this).find("NUMERO").text();
+
+                    html += "<button class=" + "myboton" + " data-departamento=" + idDepartamento + ">DETALLES " + idDepartamento + "</button>";
+
+                    $("#resultado").append(html);
+
+                    $("button.myboton").each(function () {
+                        $(this).click(function () {
+                            var botonnum = $(this).data("departamento");
+
+                            // CON LA SIGUIENTE SENTENCIA RECUPERAMOS EL DOCUMENTO XML, NOS SIRVE EN CASO DE QUE POR EJEMPLO HAYA SIDO EDITADO, VOLVEMOS A RECARGARLO Y NO SE QUEDA CON LOS DATOS CARGADOS EN LA PRIMERA SENTENCIA $.get QUE EJECUTAMOS EN EL SCRIPT
+                            $.get("../XML/departamentosetiquetas.xml", function (data) {
+                                // CON LA SIGUIENTE SENTENCIA ESTAMOS INDICANDO QUE DENTRO DE $(data) SE BUSQUE DEPARTAMENTO, Y QUE POR CADA DEPARTAMENTO ENCONTRADO EN DATA EJECUTEMOS LA SIGUIENTE FUNCION
+                                $(data).find("DEPARTAMENTO").each(function () {
+                                    // CREAMOS 3 VAR QUE VAN A ALMACENAR DE CADA DEPARTAMENTO (o en su mismo departamento, this es el mismo), BUSCAREMOS SU NUMERO, NOMBRE Y LOCALIDAD Y RECUPERAREMOS EL VALOR DE TEXTO
+                                    var numero = $(this).find("NUMERO").text();
+                                    var nombre = $(this).find("NOMBRE").text();
+                                    var localidad = $(this).find("LOCALIDAD").text();
+
+                                    // EL SIGUIENTE IF NOS SIRVE PARA QUE EN CASO DE QUE EL VALOR ALMACENADO EN LA VAR botonnum SEA IGUAL AL VALOR ALMACENADO EN LA VAR numero, ENTONCES SE EJECUTARA LA FUNCION QUE NOS PINTARA LOS DATOS DEL DEPARTAMENTO EN LA CAJA #subResultado
+                                    if (parseInt(botonnum) == parseInt(numero)) {
+                                        var html = "";
+
+                                        $(html).empty();
+                                        html += "<h1><s>NOMBRE</s>: " + nombre + ", <s>LOCALIDAD</s>:" + localidad + "</h1>"
+
+                                        $("#subResultado").html(html)
+                                    }
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

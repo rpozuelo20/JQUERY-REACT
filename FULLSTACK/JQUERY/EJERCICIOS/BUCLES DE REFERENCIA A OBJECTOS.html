@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>EJEMPLO EACH</h1>
+    <p>PARRAFO 1</p>
+    <p>PARRAFO 2</p>
+    <p>PARRAFO 3</p>
+    <p>PARRAFO 4</p>
+    <p>PARRAFO 5</p>
+    <script>
+        /*
+
+        Un bucle de referencia recorre objetos, no indices numericos, tendremos una variable que sera el objeto que estamos referenciando, dicha variable en JQUERY en this
+
+            var botones = [boton1, boton2, boton3];
+
+            Queremos cambiar el texto de cada boton con un bucle
+
+            for(var i=0; i<botones.length; i++){
+                CAPTURAMOS CADA BOTON POR SU POSICION
+
+                var boton = botones[i]; // VARIABLE DE REFERENCIA
+                boton.text(NUMERO INVENTADO);
+            }
+
+        Cuando en JQUERY trabajamos con conjuntos, podemos recorrerlos si lo deseamos, lo mas comodo es utilizar bucles de referencia con each
+        Tenemos en la pagina varios botones dibujados en HTML
+        Deseamos recorrer todos los botones y cambiar su texto
+
+            $("button").each(function(){
+                AQUI DENTRO HACEMOS REFERENCIA A CADA BOTON CON this
+
+                $(this).text(NUMERO INVENTADO)
+            })
+            
+        */
+
+        $(document).ready(function () {
+            $("p").click(function () {
+                var colores = ["blue", "yellow", "green", "red", "black"];
+                // QUEREMOS QUE CADA P TENGA UN COLOR DISTINTO AL PULSAR
+                $("p").each(function () {
+                    var indice = parseInt(Math.random() * colores.length);
+                    // RECUPERAMOS EL COLOR ALEATORIO
+                    var color = colores[indice];
+                    // CAMBIAMOS EL COLOR A CADA P DEL EACH
+                    $(this).css("background-color", color);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

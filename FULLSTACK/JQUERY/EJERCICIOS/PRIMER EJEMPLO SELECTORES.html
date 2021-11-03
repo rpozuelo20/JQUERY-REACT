@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+
+    <style>
+        .rojo {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>TITULO 1</h1>
+    <h2 class="rojo">TITULO 2</h2>
+    <h3 class="rojo">TITULO 3</h3>
+    <h4 id="titulo4">TITULO 4</h4>
+
+    <button>Button</button>
+
+    <script>
+        $(document).ready(
+            function () {
+                // alert("Utilizando Jquery!!!");
+
+                //SELECTORES DE ETIQUETA
+                //ACCIONES/ORDENES
+                $("h1").hide();
+                //EVENTOS/CUANDO/LISTENER
+                $("button").click(function () {
+                    $("h1").show();
+                    //SELECTOR DE ESTILOS
+                    $(".rojo").hide();
+                    $("#titulo4").css("font-size", "48px")
+                });
+                $(".rojo").click(function () {
+                    $(this).fadeOut(5000);
+                });
+
+            }
+        );
+    </script>
+</body>
+
+</html>

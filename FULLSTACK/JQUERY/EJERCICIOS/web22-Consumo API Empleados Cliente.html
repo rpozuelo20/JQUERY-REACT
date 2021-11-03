@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Master Programación</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sticky-footer/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../BOOTSTRAP/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Favicons -->
+    <meta name="theme-color" content="#7952b3">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="../BOOTSTRAP/css/sticky-footer.css" rel="stylesheet">
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+        <div class="container">
+            <h1 class="mt-5">Consumo API Empleados Cliente</h1>
+            <div class="container">
+                <hr>
+                <div class="container">
+                    <p style="font-weight: bold;">Introduzca un salario:</p>
+                    <input type="text" class="form-control" id="inputsalario" min="0">
+                    <br>
+                    <button class="btn btn-primary" id="botonbuscar">Buscar empleados</button>
+                </div>
+                <hr>
+                <table class="table table-dark" id="tablaempleados">
+                    <thead>
+                        <tr>
+                            <th>APELLIDO</th>
+                            <th>OFICIO</th>
+                            <th>SALARIO</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <table class="table table-dark" id="tabladatosempl" style="visibility: hidden;">
+                    <thead>
+                        <tr>
+                            <th>IDEMPLEADO</th>
+                            <th>APELLIDO</th>
+                            <th>OFICIO</th>
+                            <th>SALARIO</th>
+                            <th>DEPARTAMENTO</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">Master Programación, Rubén Pozuelo Martínez.</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../BOOTSTRAP/js/bootstrap.min.js"></script>
+    <script src="../BOOTSTRAP/js/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#inputsalario").val("");
+            var urlempl = "https://apiempleadosspgs.azurewebsites.net";
+            var requestempl = "/api/empleados";
+
+            $("#inputsalario").change(function () {
+                $("#tabladatosempl").attr({ "style": "visibility:hidden" });
+            });
+
+            $("#botonbuscar").click(function () {
+                var salario = $("#inputsalario").val();
+                // console.log(salario);
+                $.ajax({
+                    "url": urlempl + requestempl,
+                    "type": "GET",
+                    "dataType": "json",
+                    "success": function (data) {
+                        var html = "";
+                        $.each(data, function (index, empl) {
+                            if (parseInt(empl.salario) >= parseInt(salario)) {
+                                html += "<tr>";
+                                html += "<td><a href=# style=color:white data-idempl=" + empl.idEmpleado + ">" + empl.apellido + "</a></td>";
+                                html += "<td>" + empl.oficio + "</td>";
+                                html += "<td>" + empl.salario + "</td>";
+                                html += "</tr>";
+                            }
+                            $("#tablaempleados tbody").html(html);
+                            $("td a").click(function () {
+                                // console.log($(this).text());
+                                var dataid = $(this).data("idempl");
+                                $("#tabladatosempl").attr({ "style": "visibility:visible" });
+                                // console.log(parseInt(dataid));
+                                $.ajax({
+                                    "url": urlempl + requestempl,
+                                    "type": "GET",
+                                    "dataType": "json",
+                                    "success": function (data) {
+                                        var html = "";
+                                        $.each(data, function (index, empl) {
+                                            if (parseInt(dataid) == parseInt(empl.idEmpleado)) {
+                                                // console.log(empl.apellido);
+                                                html += "<tr>";
+                                                html += "<td>" + empl.idEmpleado + "</td>";
+                                                html += "<td>" + empl.apellido + "</td>";
+                                                html += "<td>" + empl.oficio + "</td>";
+                                                html += "<td>" + empl.salario + "</td>";
+                                                html += "<td>" + empl.departamento + "</td>";
+                                                html += "</tr>";
+                                            }
+                                            $("#tabladatosempl tbody").html(html);
+                                        });
+                                    }
+                                });
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

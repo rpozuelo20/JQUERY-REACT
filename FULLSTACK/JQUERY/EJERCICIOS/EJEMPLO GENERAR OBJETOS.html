@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <input type="range" id="inpRange" min="1" max="10" value="0">
+    <div id="result"></div>
+    <script>
+        // Tendremos en la pagina, de forma estatica, un control de tipo rango y un DIV donde dibujar los controles dinamicos.
+
+        // Al cambiar el rango, dibujaremos tantas imagenes como valor tengamos seleccionados.
+
+        // Cuando pasemos por encima de una imagen, cambiamos la imagen y volvemos a la misma imagen al dejar de estar encima.
+
+        // Como queremos limpiar el dibujo para cada vez que seleccionemos un rango de imagenes pues limpiamos el contenido del div.
+
+        $(document).ready(
+            function () {
+                var rangeValue = parseInt($("#inpRange").val());
+                var parentBox = $("#result").empty();
+                $("#inpRange").change(
+                    function () {
+                        var rangeValue = parseInt($("#inpRange").val());
+                        var parentBox = $("#result").empty();
+
+
+                        for (i = 0; i < rangeValue; i++) {
+                            var myImage = $("<img>", { "src": "../IMG/sad.jpg", "style": "height:150px", "class": "changeIMG" });
+
+                            myImage.appendTo(parentBox);
+
+                            myImage.mouseover(function () {
+                                $(this).attr({ "src": "../IMG/happy.webp" })
+                            })
+                            myImage.mouseout(function () {
+                                $(this).attr({ "src": "../IMG/sad.jpg" })
+                            })
+                        }
+
+                        // var changeIMG = $("img.changeIMG");
+                        // changeIMG.mouseover(function () {
+                        //     $(this).attr({ "src": "../IMG/happy.webp" })
+                        // })
+                        // changeIMG.mouseout(function () {
+                        //     $(this).attr({ "src": "../IMG/sad.jpg" })
+                        // })
+
+                    }
+                );
+            }
+        );
+    </script>
+</body>
+
+</html>

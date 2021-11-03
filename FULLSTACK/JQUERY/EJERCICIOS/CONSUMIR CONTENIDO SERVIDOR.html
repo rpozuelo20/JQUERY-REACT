@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <script>
+        /*
+        Cuando hablamos de servidor estamos hablando de la nube, en FRONT no podemos utilizar bases de datos, para poder acceder a datos se utilizan los servicios REST, RESTFUL, API...
+
+        Todos los servicios utilizan el concepto de serializacion, la serializacion implica crear un objeto en un punto y ser capaz de recuperar el mismo objeto en otro punto diferente con el mismo formato.
+
+        Dentro de los servicios existen dos formastos:
+            XML: una serie de etiquetas con estructua jerarquica como HTML
+            JSON: una serie de claves key-value
+
+        Tenemos dos tipos de servicios:
+            Sericios API/REST - son los mas utilizados (FRONT)
+            Servicios Web WCF - nivel interno de empresa, no estan externalizados (BACK)
+
+        Los servicios en FRONT deben tener habilitado CORS para poder consumirlos.
+        Si CORS no esta habilitado en el servicio no podre leerlo desde el FRONT.
+        CORS es una medida de seguridad para permitir acceso al servicio desde servidores externos, Allow Origin.
+
+        Vamos a empezar trabajando en LOCAL, los archivos estaran en local, veremos que nos da igual que esten en local o en remoto.
+
+        COMENZAMOS CON XML.
+
+        XML es un lenguaje de jerarquia y estructurado con etiquetas como HTML, diferencia mayusculas de minusculas.
+
+        Siempre debe contener  una raiz.
+
+        Las etiquetas y estructura son con:
+            <aperturas>
+                <apertura>
+                    <campo></campo>
+                    <campo></campo>
+                    <campo></campo>
+                </apertura>
+                <apertura>
+                    <campo></campo>
+                    <campo></campo>
+                    <campo></campo>
+                </apertura>      
+            </aperturas>
+
+        Para consumir el documento debemos de utilizar la jerarquia de etiquetas, podemos utilizar busquedas o podemos recuperar todo el documento y recorrerlo.
+
+        Para poder consumir en lectura un servicio api XML se realiza con el metodo get:
+            $.get("URL", function(data){
+                //data es el contenido de todo el documento XML
+            })
+
+        Cualquier servicio API puede tener mas metodos ademas de GET:
+            GET: lectura
+            POST: insertar
+            PUT: modificar
+            DELETE: eliminar
+
+        Son metodos asincronos todos los accesos a los servicios, por ejemplo:
+        c   onsole.log("Antes del servicio");
+            $.get("URL", function(data){
+                console.log("Leyendo datos");
+            });
+            console.log("Despues del servicio");
+
+            Devolvera el mensaje leyendo datos despues del ultimo mensaje, cuando pueda consumir el servicio desde la URL.
+
+            SALIDA POR PANTALLA:
+            Antes del servicio,
+            Despues del servicio,
+            Letendo datos.
+
+        Trabajamos con data pero con $(data), podemos realizar busquedas de etiquetas con el metodo find().
+            $(data).find("nombre");
+        
+        Como nos devuelve un conjunto siempre, se utiliza each() como hemos aprendido.
+            $(data).find("nombre").each(function(){
+                // this representaria cada nodo recorrido
+                $(this).text() // DEVUELVE EL CONTENIDO
+                $(this).attr("ATRIBUTO // Podria ser text, src, etc...") // DEVUELVE UN ATRIBUTO
+            });
+
+        Tambien tenemos posicionamiento por movimiento en el conjunto.
+            .first(), .last(), .eq(POSICION)
+        */
+
+        var colores = [{
+            "rojo": "red",
+            "verde": "green",
+            "azul": "blue"
+        }, {
+            "amarillo": "yellow",
+            "marron": "brown",
+            "cyan": "cyan"
+        }];
+
+        console.log(colores[1].amarillo)
+    </script>
+</body>
+
+</html>

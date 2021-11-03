@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jQuery Ejemplo SPA</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body>
+    <header id="menuNav"></header>
+
+    <div class="container-fluid container text-center">
+      <br />
+      <h1 class="container">
+        Jugadores
+        <small id="nomEquipo" class="text-muted">Cargando equipo...</small>
+      </h1>
+      <hr />
+      <div class="container p-3">
+        <table class="border container">
+          <thead>
+            <tr>
+              <th>NOMBRE</th>
+              <th>IMAGEN</th>
+              <th>DETALLES</th>
+            </tr>
+          </thead>
+          <tbody id="jugadoresTabla"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#menuNav").load("./navbar.html"); // nota: .load permite cargar "componentes" en jQuery.
+        // nota: para poder recuperar valores del href o url son necesarias las 2 siguientes lineas:
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        // ^^^^^^ nota: donde params seria el id del equipo que recuperamos en este caso (del archivo navbar.html).
+
+        var urlapi = "https://apichampions.azurewebsites.net/";
+        var requestJugadores = "api/Jugadores/JugadoresEquipo/" + params.id; // nota: necesario indicar que parametro queremos recuperar, en este caso el id.
+        $.ajax({
+          url: urlapi + requestJugadores,
+          type: "GET",
+          success: function (data) {
+            $.each(data, function (index, jugador) {
+              $("#jugadoresTabla").append(
+                "<tr><td>" +
+                  jugador.nombre +
+                  "</td><td><img src=" +
+                  jugador.imagen +
+                  " class=w-25></td><td><a href=# class=btn>Detalles</a></td></tr>"
+              );
+            });
+          },
+          error: function () {
+            console.log("Error al cargar los jugadores!!!");
+          },
+        });
+
+        var requestEquipo = "api/Equipos/" + params.id; // nota: necesario indicar que parametro queremos recuperar, en este caso el id.
+        $.ajax({
+          url: urlapi + requestEquipo,
+          type: "GET",
+          success: function (data) {
+            $("#nomEquipo").text(data.nombre);
+          },
+          error: function () {
+            console.log("Error al cargar el equipo!!!");
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+
+    <script src="../jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <img src="../IMG/happy.webp">
+    <script>
+        //Podemos recuperar el valor o podemos cambiar el valor, para acceder se utiliza la palabra attr
+        // $("img").attr("src", "../IMG/2.jpg"); //CAMBIANDO VALOR SRC
+        // var imagen = $("img").attr("src"); //RECUPERAMOS VALOR SRC
+
+        //PODEMOS UTILIZAR CODIGO JS COMBINADO CON JQUERY
+        //Podriamos preguntar por la imagen
+        // if (imagen == "1.webp") {
+        //     $("img").attr("src", "../IMG/2.jpg");
+        // } else {
+        //     $("img").attr("src", "../IMG/1.webp");
+        // }
+
+        $(document).ready(
+            function () {
+                $("img").mouseover(
+                    function () {
+                        console.log("Is hover");
+                        $(this).attr("src", "../IMG/sad.jpg");
+                    }
+                );
+                $("img").mouseout(
+                    function () {
+                        console.log("Is out");
+                        $(this).attr("src", "../IMG/happy.webp");
+                    }
+                )
+            }
+        );
+    </script>
+</body>
+
+</html>
